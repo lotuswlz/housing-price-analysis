@@ -12,11 +12,11 @@ public class BaseDocument {
         return id.toString();
     }
 
-    public void setId(String id) {
-        this.setId(new ObjectId(id));
-    }
-
     public void setId(ObjectId id) {
         this.id = id;
+    }
+
+    public void setId(String id) {
+        this.setId(new ObjectId(id));
     }
 }

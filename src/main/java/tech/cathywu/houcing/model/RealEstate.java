@@ -2,7 +2,9 @@ package tech.cathywu.houcing.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import tech.cathywu.houcing.annotation.CascadeCreate;
@@ -11,6 +13,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "real_estate")
 public class RealEstate extends BaseDocument {
 
@@ -20,6 +24,7 @@ public class RealEstate extends BaseDocument {
     private BigDecimal area;
     private String buildingNumberSnapshot;
     private int buildingCount;
+    private boolean isHardCover;
 
     @DBRef
     private HousingAnnouncement announcement;

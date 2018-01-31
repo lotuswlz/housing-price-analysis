@@ -1,4 +1,4 @@
-package tech.cathywu.houcing;
+package tech.cathywu.houcing.configuration;
 
 import com.mongodb.MongoClient;
 import org.springframework.beans.factory.annotation.Value;

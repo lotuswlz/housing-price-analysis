@@ -1,15 +1,15 @@
 buildscript {
     ext {
-        springBootVersion = '1.5.8.RELEASE'
-        springCloudVersion = 'Dalston.SR4'
+        springBootVersion = '2.0.0.M7'
+        springVersion = '5.0.3.RELEASE'
     }
     repositories {
         maven { url "https://plugins.gradle.org/m2/" }
-
+        maven { url "http://repo.spring.io/milestone/" }
+        mavenCentral()
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath "gradle.plugin.com.boxfuse.client:flyway-release:4.2.0"
     }
 }
 
@@ -17,7 +17,6 @@ apply plugin: 'java'
 apply plugin: 'org.springframework.boot'
 apply plugin: "idea"
 apply plugin: "eclipse"
-apply plugin: "org.flywaydb.flyway"
 
 compileJava.options.encoding = "UTF-8"
 compileTestJava.options.encoding = "UTF-8"
@@ -33,30 +32,33 @@ sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
 repositories {
-    jcenter()
+    maven { url "https://repo.spring.io/libs-snapshot" }
+    maven { url "https://repo.spring.io/libs-milestone" }
+    mavenCentral()
+    mavenLocal()
 }
-
-ext['hibernate.version'] = '5.2.4.Final'
 
 configurations {
     provided.all*.exclude group: 'javax.servlet'
 }
 
 dependencies {
-    compile('org.springframework.cloud:spring-cloud-starter-config')
-    compile('org.springframework.boot:spring-boot-starter-data-jpa')
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile("org.springframework.boot:spring-boot-starter-actuator")
-    compile("org.springframework.boot:spring-boot-starter-security")
-    compile("org.springframework.boot:spring-boot-starter-data-redis")
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8'
+    compile("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
+    compile("org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}")
+    compile("org.springframework:spring-core:${springVersion}")
+    compile("org.springframework:spring-context:${springVersion}")
+    compile('org.springframework.data:spring-data-mongodb:2.0.3.RELEASE')
+    compile group: 'org.hibernate.javax.persistence', name: 'hibernate-jpa-2.1-api', version: '1.0.2.Final'
+    compile group: 'org.mongodb', name: 'mongodb-driver', version: '3.6.0'
+    compile group: 'org.mongodb', name: 'mongo-java-driver', version: '3.6.0'
 
-    compile('org.flywaydb:flyway-core')
+
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.9.4'
+
     compile('com.google.guava:guava:23.0')
-    compile('org.projectlombok:lombok')
+    compile('org.projectlombok:lombok:1.16.18')
     compile("io.jsonwebtoken:jjwt:0.9.0")
-    runtime('mysql:mysql-connector-java')
 
     compile 'org.apache.commons:commons-lang3:3.6'
     compile 'commons-codec:commons-codec:1.10'
@@ -64,20 +66,5 @@ dependencies {
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile('org.springframework.restdocs:spring-restdocs-mockmvc')
     testCompile 'com.github.springtestdbunit:spring-test-dbunit:1.2.0'
-    testCompile 'io.rest-assured:rest-assured:3.0.5'
     testCompile 'org.dbunit:dbunit:2.5.4'
-    testCompile('com.h2database:h2')
-}
-
-dependencyManagement {
-    imports {
-        mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
-    }
-}
-
-flyway {
-    url = "jdbc:mysql://127.0.0.1:3306"
-    user = "root"
-    password = "password"
-    schemas = ['houcing']
 }
